@@ -14,14 +14,14 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="Регистрация"
+        android:text="@string/reg_header_reg"
         android:textSize="24sp" />
 
     <EditText
         android:id="@+id/edit_text_name"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:hint="Имя"
+        android:hint="@string/reg_hint_name"
         android:inputType="textPersonName"
         android:maxLength="30" />
 
@@ -29,7 +29,7 @@
         android:id="@+id/edit_text_surname"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:hint="Фамилия"
+        android:hint="@string/reg_hint_surname"
         android:inputType="textPersonName"
         android:maxLength="60" />
 
@@ -37,35 +37,35 @@
         android:id="@+id/edit_text_mail"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:hint="Адрес эл.почты"
+        android:hint="@string/reg_hint_email"
         android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/edit_password"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:hint="Пароль"
+        android:hint="@string/reg_hint_password"
         android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/edit_second_password"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:hint="Повторите пароль"
+        android:hint="@string/reg_hint_password2"
         android:inputType="textPassword" />
 
     <CheckBox
         android:id="@+id/check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Согласен(-а) с условиями использования приложения" />
+        android:text="@string/reg_cb_terms" />
 
     <Button
         android:id="@+id/registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="controlRegistration"
-        android:text="Зарегистрироваться" />
+        android:text="@string/reg_bt_reg" />
 
     <TextView
         android:id="@+id/text_error_message"

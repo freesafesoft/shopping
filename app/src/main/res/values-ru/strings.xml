@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Умные закупки</string>
+
+    <!-- ========= Main Avtivity ========= -->
+    <string name="reg_header_reg">Регистрация</string>
+    <string name="reg_tv_empty_name">Укажите имя</string>
+    <string name="reg_tv_empty_surname">Укажите фамилию</string>
+    <string name="reg_tv_empty_email">Укажите email</string>
+    <string name="reg_tv_empty_pass">Укажите пароль</string>
+    <string name="reg_tv_empty_pass2">Подтвердите пароль</string>
+    <string name="reg_tv_pass_not_same">Пароли не совпадают</string>
+    <string name="reg_tv_terms">Подтвердите согласие условиями использования</string>
+    <string name="reg_tv_registration_process">Регистрация...</string>
+    <string name="reg_tv_unexpected_response">Неожиданный ответ от сервера</string>
+    <string name="reg_tv_cant_parse_response">Нераспознанный ответ сервера</string>
+    <string name="reg_tv_error">Ошибка регистрации</string>
+    <string name="reg_hint_name">Имя</string>
+    <string name="reg_hint_surname">Фамилия</string>
+    <string name="reg_hint_email">Адрес эл.почты</string>
+    <string name="reg_hint_password">Пароль</string>
+    <string name="reg_hint_password2">Повторите пароль</string>
+    <string name="reg_cb_terms">Согласен(-а) с условиями использования приложения</string>
+    <string name="reg_bt_reg">Зарегистрироваться</string>
+</resources>

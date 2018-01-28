@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Smatr shopping</string>
+    <string name="app_name">Robich zakupy</string>
 
-    <!-- ========= Registration Avtivity ========= -->
+    <!-- ========= Main Avtivity ========= -->
     <string name="reg_header_reg">Registration</string>
-    <string name="reg_tv_empty_name">Name field is empty</string>
-    <string name="reg_tv_empty_surname">Surname field is empty</string>
-    <string name="reg_tv_empty_email">Email field is empty</string>
-    <string name="reg_tv_empty_pass">Password field is empty</string>
-    <string name="reg_tv_empty_pass2">Confirm password</string>
-    <string name="reg_tv_pass_not_same">Passwords are not same</string>
+    <string name="reg_tv_empty_name">Imje</string>
+    <string name="reg_tv_empty_surname">Nazwisko</string>
+    <string name="reg_tv_empty_email">email</string>
+    <string name="reg_tv_empty_pass">Haslo 1</string>
+    <string name="reg_tv_empty_pass2">Haslo 2</string>
+    <string name="reg_tv_pass_not_same">Haslo druge</string>
     <string name="reg_tv_terms">You have to agree with terms</string>
     <string name="reg_tv_registration_process">Registration in process...</string>
     <string name="reg_tv_unexpected_response">Unexpected response from server</string>
@@ -22,5 +22,4 @@
     <string name="reg_hint_password2">Confirm password</string>
     <string name="reg_cb_terms">I\'m agree with provided terms</string>
     <string name="reg_bt_reg">Registration</string>
-
 </resources>
