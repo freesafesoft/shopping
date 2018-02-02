@@ -94,7 +94,12 @@ public class MainActivity extends AppCompatActivity implements Callback {
     public void onFailure(Call call, final IOException e) {
         final String errorMessage = getResources().getString(R.string.reg_tv_error) + ": " + e.getMessage();
         Log.e(getClass().getName(), errorMessage, e);
-        runOnUiThread(() -> tvResponse.setText(errorMessage));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvResponse.setText(errorMessage);
+            }
+        });
     }
 
     @Override
@@ -108,18 +113,38 @@ public class MainActivity extends AppCompatActivity implements Callback {
             Log.i(getClass().getName(), "error: " + error);
             if (error != null) {
                 final String errorMsg = getResources().getString(R.string.reg_tv_error) + ": " + error;
-                runOnUiThread(() -> tvResponse.setText(errorMsg));
-            } else if ("OK".equals("message")) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvResponse.setText(errorMsg);
+                    }
+                });
+            } else if ("OK".equals(message)) {
                 final String errorMsg = getResources().getString(R.string.reg_tv_unexpected_response) + ": " + message;
-                runOnUiThread(() -> tvResponse.setText(errorMsg));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvResponse.setText(errorMsg);
+                    }
+                });
             } else {
                 // open login activity and enter login and password to login fields
-                runOnUiThread(() -> tvResponse.setText(message)); // TODO TMP line
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvResponse.setText(message);
+                    }
+                });
             }
         } catch (JSONException e) {
             final String errorMsg = getResources().getString(R.string.reg_tv_cant_parse_response) + ": " + body;
             Log.e(getClass().getName(), errorMsg, e);
-            runOnUiThread(() -> tvResponse.setText(errorMsg));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvResponse.setText(errorMsg);
+                }
+            });
         }
     }
 }
