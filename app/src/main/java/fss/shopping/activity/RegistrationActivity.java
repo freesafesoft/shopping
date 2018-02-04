@@ -19,7 +19,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements Callback {
+public class RegistrationActivity extends AppCompatActivity implements Callback {
     private EditText etName;
     private EditText etSurname;
     private EditText etEmail;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_registration);
         etName = (EditText) findViewById(R.id.edit_text_name);
         etSurname = (EditText) findViewById(R.id.edit_text_surname);
         etEmail = (EditText) findViewById(R.id.edit_text_mail);
