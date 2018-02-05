@@ -22,5 +22,10 @@
     <string name="reg_hint_password2">Confirm password</string>
     <string name="reg_cb_terms">I\'m agree with provided terms</string>
     <string name="reg_bt_reg">Registration</string>
+    <string name="enter_login">Log in</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="passw_text">Please enter your email to search for your account</string>
+    <string name="passw_botton">Find your account</string>
+
 
 </resources>

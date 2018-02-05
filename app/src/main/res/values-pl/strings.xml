@@ -17,9 +17,14 @@
     <string name="reg_tv_error">Registration error</string>
     <string name="reg_hint_name">Name</string>
     <string name="reg_hint_surname">Surname</string>
-    <string name="reg_hint_email">Email</string>
-    <string name="reg_hint_password">Password</string>
+    <string name="reg_hint_email">Adres e-mail</string>
+    <string name="reg_hint_password">Haslo</string>
     <string name="reg_hint_password2">Confirm password</string>
     <string name="reg_cb_terms">I\'m agree with provided terms</string>
-    <string name="reg_bt_reg">Registration</string>
+    <string name="reg_bt_reg">Zarejestruj sie</string>
+    <string name="enter_login">Zaloguj się</string>
+    <string name="forgot_password">Nie pamietasz hasła?</string>
+    <string name="passw_text">Podaj adres e-mail, aby wyszukać konto</string>
+    <string name="passw_botton">Znajdź swoje konto</string>
+
 </resources>
