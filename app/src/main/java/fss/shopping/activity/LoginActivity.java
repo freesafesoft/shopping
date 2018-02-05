@@ -3,18 +3,32 @@ package fss.shopping.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.regex.Pattern;
+
 import fss.shopping.R;
+import fss.shopping.service.ServerRequest;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
-public class LoginActivity extends AppCompatActivity {
-
+public class LoginActivity extends AppCompatActivity implements Callback, TextWatcher {
+    private static final String TAG = LoginActivity.class.getName();
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private EditText etEmail;
     private EditText etPassword;
+    private Button btnLogin;
     private TextView tvResponse;
+
+    private Pattern emailPattern;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,21 +37,25 @@ public class LoginActivity extends AppCompatActivity {
         tvResponse = (TextView) findViewById(R.id.text_error_message_log_in);
         etEmail = (EditText) findViewById(R.id.edit_text_mail_enter);
         etPassword = (EditText) findViewById(R.id.edit_password_enter);
+        btnLogin = (Button) findViewById(R.id.button_login);
+
+        etEmail.addTextChangedListener(this);
+        etEmail.removeTextChangedListener(this);
+        emailPattern = Pattern.compile(EMAIL_PATTERN);
+        validateEmailAndPassword();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        validateEmailAndPassword();
     }
 
     public void login(View view) {
+        btnLogin.setEnabled(false);
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
-
-        if (email.trim().equals("")) {
-            tvResponse.setText(R.string.reg_tv_empty_email);
-            return;
-        }
-
-        if (password.trim().equals("")) {
-            tvResponse.setText(R.string.reg_tv_empty_pass);
-            return;
-        }
+        ServerRequest.login(this, email, password);
     }
 
     public void goToRegistration(View v) {
@@ -46,9 +64,58 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
     }
 
-    public void forgot_password(View w) {
+    public void forgotPassword(View w) {
+        startActivity(new Intent(getApplicationContext(), PasswordResetActivity.class));
+    }
 
-        Button button = (Button) w;
-        startActivity(new Intent(getApplicationContext(), PasswordActivity.class));
+    private void validateEmailAndPassword() {
+        String email = etEmail.getText().toString();
+        boolean emailValid = emailPattern.matcher(email).matches();
+
+        String password = etPassword.getText().toString();
+        boolean passwordValid = password.length() > 0;
+        if (emailValid && passwordValid) {
+            btnLogin.setEnabled(true);
+        } else {
+            btnLogin.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        validateEmailAndPassword();
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+    }
+
+    @Override
+    public void onFailure(Call call, final IOException e) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btnLogin.setEnabled(true);
+                tvResponse.setText("Error: " + e.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onResponse(Call call, final Response response) throws IOException {
+        final String result = response.body().string();
+        Log.i(TAG, response.message());
+        Log.i(TAG, response.headers().toString());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btnLogin.setEnabled(true);
+                tvResponse.setText("Response: " + result);
+            }
+        });
     }
 }

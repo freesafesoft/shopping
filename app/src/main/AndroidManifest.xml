@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RegistrationActivity"></activity>
-        <activity android:name=".activity.PasswordActivity"></activity>
+        <activity android:name=".activity.PasswordResetActivity"></activity>
     </application>
 
 </manifest>

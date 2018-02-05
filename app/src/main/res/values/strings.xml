@@ -22,10 +22,15 @@
     <string name="reg_hint_password2">Confirm password</string>
     <string name="reg_cb_terms">I\'m agree with provided terms</string>
     <string name="reg_bt_reg">Registration</string>
-    <string name="enter_login">Log in</string>
-    <string name="forgot_password">Forgot password?</string>
-    <string name="passw_text">Please enter your email to search for your account</string>
-    <string name="passw_botton">Find your account</string>
 
+    <!-- ========= Login Avtivity ========= -->
+    <string name="log_hint_email">Email</string>
+    <string name="log_hint_password">Password</string>
+    <string name="log_btn_login">Log in</string>
+    <string name="log_btn_forgot_password">Forgot password?</string>
 
+    <!-- ========= PasswordReset Avtivity ========= -->
+    <string name="pwd_tv_provide_email">Please enter your email to search for your account</string>
+    <string name="pwd_hint_email">Email</string>
+    <string name="pwd_btn_reset_password">Reset password</string>
 </resources>

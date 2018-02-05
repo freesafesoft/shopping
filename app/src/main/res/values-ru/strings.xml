@@ -22,10 +22,15 @@
     <string name="reg_hint_password2">Повторите пароль</string>
     <string name="reg_cb_terms">Согласен(-а) с условиями использования приложения</string>
     <string name="reg_bt_reg">Зарегистрироваться</string>
-    <string name="enter_login">Войти</string>
-    <string name="forgot_password">Забыли пароль?</string>
-    <string name="passw_text">Чтобы найти аккаунт, введите адрес эл.почты</string>
-    <string name="passw_botton">Найти аккаунт</string>
 
+    <!-- ========= Login Avtivity ========= -->
+    <string name="log_hint_email">Адрес эл.почты</string>
+    <string name="log_hint_password">Пароль</string>
+    <string name="log_btn_login">Войти</string>
+    <string name="log_btn_forgot_password">Забыли пароль?</string>
 
+    <!-- ========= PasswordReset Avtivity ========= -->
+    <string name="pwd_tv_provide_email">Чтобы найти аккаунт, введите адрес эл.почты</string>
+    <string name="pwd_hint_email">Адрес эл.почты</string>
+    <string name="pwd_btn_reset_password">Сбросить пароль</string>
 </resources>

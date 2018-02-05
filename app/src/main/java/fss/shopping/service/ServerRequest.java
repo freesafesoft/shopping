@@ -37,4 +37,19 @@ public class ServerRequest {
         call.enqueue(callback);
         return call;
     }
+
+    public static Call login(Callback callback, String email, String password) {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .build();
+        Request registrationRequest = new Request.Builder()
+                .url("http://192.168.0.80:8080/login")
+                .post(requestBody)
+                .build();
+        Call call  = client.newCall(registrationRequest);
+        call.enqueue(callback);
+        return call;
+    }
 }
