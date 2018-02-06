@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import fss.shopping.R;
@@ -107,14 +108,14 @@ public class LoginActivity extends AppCompatActivity implements Callback, TextWa
 
     @Override
     public void onResponse(Call call, final Response response) throws IOException {
-        final String result = response.body().string();
-        Log.i(TAG, response.message());
-        Log.i(TAG, response.headers().toString());
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                btnLogin.setEnabled(true);
-                tvResponse.setText("Response: " + result);
+                tvResponse.setText(response.headers().toString());
+                if(response.header("Set-Cookie").indexOf("JSESSIONID") != -1 )
+                    startActivity(new Intent(getApplicationContext(), AuthTestActivity.class));
+                else
+                    Log.e(TAG, "No JSESSION IN COOKIES!!");
             }
         });
     }

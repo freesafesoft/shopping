@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".activity.RegistrationActivity"></activity>
         <activity android:name=".activity.PasswordResetActivity"></activity>
+        <activity android:name=".activity.AuthTestActivity"></activity>
     </application>
 
 </manifest>

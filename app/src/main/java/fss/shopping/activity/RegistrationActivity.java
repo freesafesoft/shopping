@@ -107,11 +107,11 @@ public class RegistrationActivity extends AppCompatActivity implements Callback 
         final String body = response.body().string();
         try {
             JSONObject json = new JSONObject(body);
-            final String message = json.getString("message");
+            final String message = json.getString("status");
             Log.i(getClass().getName(), "message: " + message);
             final String error = json.getString("error");
             Log.i(getClass().getName(), "error: " + error);
-            if (error != null) {
+            if (error != null && !error.equals("null")) {
                 final String errorMsg = getResources().getString(R.string.reg_tv_error) + ": " + error;
                 runOnUiThread(new Runnable() {
                     @Override
