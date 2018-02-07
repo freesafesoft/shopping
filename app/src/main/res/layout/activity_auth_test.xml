@@ -9,27 +9,11 @@
     tools:context=".activity.AuthTestActivity">
 
     <Button
-        android:id="@+id/write"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="write"
-        android:text="Write"
-        style="@style/Widget.AppCompat.Button.Colored"/>
-
-    <Button
-        android:id="@+id/read"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="read"
-        android:text="read"
-        style="@style/Widget.AppCompat.Button.Colored"/>
-
-    <Button
         android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="check"
-        android:text="check"
+        android:onClick="logout"
+        android:text="Logout"
         style="@style/Widget.AppCompat.Button.Colored"/>
 
     <TextView

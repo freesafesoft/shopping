@@ -2,6 +2,7 @@ package fss.shopping.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,19 +12,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.List;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.safetynet.SafetyNet;
+import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import java.util.regex.Pattern;
 
 import fss.shopping.R;
-import fss.shopping.service.ServerRequest;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import fss.shopping.service.LoginRequest;
 
-public class LoginActivity extends AppCompatActivity implements Callback, TextWatcher {
+public class LoginActivity extends AppCompatActivity implements LoginRequest.LoginListener, TextWatcher {
     private static final String TAG = LoginActivity.class.getName();
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final int REGISTRATION_CODE = 0;
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
@@ -41,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements Callback, TextWa
         btnLogin = (Button) findViewById(R.id.button_login);
 
         etEmail.addTextChangedListener(this);
-        etEmail.removeTextChangedListener(this);
+        etPassword.addTextChangedListener(this);
         emailPattern = Pattern.compile(EMAIL_PATTERN);
         validateEmailAndPassword();
     }
@@ -52,17 +56,32 @@ public class LoginActivity extends AppCompatActivity implements Callback, TextWa
         validateEmailAndPassword();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        etEmail.removeTextChangedListener(this);
+        etPassword.removeTextChangedListener(this);
+    }
+
     public void login(View view) {
-        btnLogin.setEnabled(false);
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
-        ServerRequest.login(this, email, password);
+        new LoginRequest(email, password, this).process();
     }
 
     public void goToRegistration(View v) {
+        startActivityForResult(new Intent(getApplicationContext(), RegistrationActivity.class), REGISTRATION_CODE);
+    }
 
-        Button button = (Button) v;
-        startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REGISTRATION_CODE) {
+            if (resultCode == RESULT_OK) {
+                String email = data.getStringExtra("email");
+                etEmail.setText(email);
+                String password = data.getStringExtra("password");
+                etPassword.setText(password);
+            }
+        }
     }
 
     public void forgotPassword(View w) {
@@ -96,26 +115,22 @@ public class LoginActivity extends AppCompatActivity implements Callback, TextWa
     }
 
     @Override
-    public void onFailure(Call call, final IOException e) {
+    public void onLoginComplete() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                btnLogin.setEnabled(true);
-                tvResponse.setText("Error: " + e.getMessage());
+                startActivity(new Intent(getApplicationContext(), AuthTestActivity.class));
             }
         });
     }
 
     @Override
-    public void onResponse(Call call, final Response response) throws IOException {
+    public void onLoginFailure(final String errorMessage) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tvResponse.setText(response.headers().toString());
-                if(response.header("Set-Cookie").indexOf("JSESSIONID") != -1 )
-                    startActivity(new Intent(getApplicationContext(), AuthTestActivity.class));
-                else
-                    Log.e(TAG, "No JSESSION IN COOKIES!!");
+                btnLogin.setEnabled(true);
+                tvResponse.setText("Error: " + errorMessage);
             }
         });
     }

@@ -1,6 +1,8 @@
 package fss.shopping.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -8,18 +10,18 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.safetynet.SafetyNet;
+import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import fss.shopping.R;
-import fss.shopping.service.ServerRequest;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import fss.shopping.service.RegistrationRequest;
 
-public class RegistrationActivity extends AppCompatActivity implements Callback {
+public class RegistrationActivity extends AppCompatActivity implements RegistrationRequest.RegistrationListener {
+    private static final String TAG = RegistrationActivity.class.getName();
     private EditText etName;
     private EditText etSurname;
     private EditText etEmail;
@@ -41,12 +43,17 @@ public class RegistrationActivity extends AppCompatActivity implements Callback 
         tvResponse = (TextView) findViewById(R.id.text_error_message);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     public void controlRegistration(View view) {
-        String name = etName.getText().toString();
-        String surname = etSurname.getText().toString();
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        String passwordConfirm = etPasswordConfirm.getText().toString();
+        final String name = etName.getText().toString();
+        final String surname = etSurname.getText().toString();
+        final String email = etEmail.getText().toString();
+        final String password = etPassword.getText().toString();
+        final String passwordConfirm = etPasswordConfirm.getText().toString();
 
         // trim удаляет пробелы в начале слова и в конце слова
         if (name.trim().equals("")) {
@@ -80,71 +87,59 @@ public class RegistrationActivity extends AppCompatActivity implements Callback 
             return;
         }
 
-        boolean checkBoxes = cbTerms.isChecked();
+        final boolean checkBoxes = cbTerms.isChecked();
         if (checkBoxes == false) {
             tvResponse.setText(R.string.reg_tv_terms);
             return;
         }
         tvResponse.setText(R.string.reg_tv_registration_process);
-        ServerRequest.registration(this, name, surname, password, passwordConfirm,
-                email, checkBoxes);
+
+        Log.i(TAG, "Registration request");
+        // Android
+        SafetyNet.getClient(this).verifyWithRecaptcha("6LfmCEUUAAAAAEV2BlBvgfklqwUkedW0ueIj1uhK")
+        // test
+       // SafetyNet.getClient(this).verifyWithRecaptcha("6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI")
+                .addOnSuccessListener(this, new OnSuccessListener<SafetyNetApi.RecaptchaTokenResponse>() {
+                    @Override
+                    public void onSuccess(SafetyNetApi.RecaptchaTokenResponse response) {
+                        if (!response.getTokenResult().isEmpty()) {
+                            new RegistrationRequest(name, surname, password, passwordConfirm,
+                                    email, checkBoxes, response.getTokenResult(), RegistrationActivity.this).process();
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Token: " + e.getMessage());
+                        if (e instanceof ApiException) {
+                            ApiException apiException = (ApiException) e;
+                            Log.e(TAG, "Error message: " +
+                                    CommonStatusCodes.getStatusCodeString(apiException.getStatusCode()));
+                        } else {
+                            Log.e(TAG, "Unknown type of error: " + e.getMessage());
+                        }
+                    }
+                });
     }
 
     @Override
-    public void onFailure(Call call, final IOException e) {
-        final String errorMessage = getResources().getString(R.string.reg_tv_error) + ": " + e.getMessage();
-        Log.e(getClass().getName(), errorMessage, e);
+    public void onRegistrationComplete() {
+        Intent data = new Intent();
+        data.putExtra("email", etEmail.getText().toString());
+        data.putExtra("password", etPassword.getText().toString());
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override
+    public void onRegistrationFailure(String errorMessage) {
+        final String errorMsg = getResources().getString(R.string.reg_tv_error) + ": " + errorMessage;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tvResponse.setText(errorMessage);
+                tvResponse.setText(errorMsg);
             }
         });
-    }
-
-    @Override
-    public void onResponse(Call call, final Response response) throws IOException {
-        final String body = response.body().string();
-        try {
-            JSONObject json = new JSONObject(body);
-            final String message = json.getString("status");
-            Log.i(getClass().getName(), "message: " + message);
-            final String error = json.getString("error");
-            Log.i(getClass().getName(), "error: " + error);
-            if (error != null && !error.equals("null")) {
-                final String errorMsg = getResources().getString(R.string.reg_tv_error) + ": " + error;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvResponse.setText(errorMsg);
-                    }
-                });
-            } else if ("OK".equals(message)) {
-                final String errorMsg = getResources().getString(R.string.reg_tv_unexpected_response) + ": " + message;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvResponse.setText(errorMsg);
-                    }
-                });
-            } else {
-                // open login activity and enter login and password to login fields
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvResponse.setText(message);
-                    }
-                });
-            }
-        } catch (JSONException e) {
-            final String errorMsg = getResources().getString(R.string.reg_tv_cant_parse_response) + ": " + body;
-            Log.e(getClass().getName(), errorMsg, e);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tvResponse.setText(errorMsg);
-                }
-            });
-        }
     }
 }
