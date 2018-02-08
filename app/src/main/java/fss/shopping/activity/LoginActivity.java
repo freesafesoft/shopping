@@ -2,22 +2,14 @@ package fss.shopping.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.safetynet.SafetyNet;
-import com.google.android.gms.safetynet.SafetyNetApi;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
@@ -28,32 +20,36 @@ public class LoginActivity extends AppCompatActivity implements LoginRequest.Log
     private static final String TAG = LoginActivity.class.getName();
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final int REGISTRATION_CODE = 0;
-    private EditText etEmail;
-    private EditText etPassword;
-    private Button btnLogin;
-    private TextView tvResponse;
 
+    private EditText etEmail;
+    private TextInputLayout tilEmail;
+    private EditText etPassword;
+    private TextInputLayout tilPassword;
+    private Button btnLogin;
     private Pattern emailPattern;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        tvResponse = (TextView) findViewById(R.id.text_error_message_log_in);
         etEmail = (EditText) findViewById(R.id.edit_text_mail_enter);
+        tilEmail = (TextInputLayout) findViewById(R.id.til_email);
         etPassword = (EditText) findViewById(R.id.edit_password_enter);
+        tilPassword = (TextInputLayout) findViewById(R.id.til_password);
         btnLogin = (Button) findViewById(R.id.button_login);
+        emailPattern = Pattern.compile(EMAIL_PATTERN);
+    }
 
+    public void onStart() {
+        super.onStart();
         etEmail.addTextChangedListener(this);
         etPassword.addTextChangedListener(this);
-        emailPattern = Pattern.compile(EMAIL_PATTERN);
-        validateEmailAndPassword();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        validateEmailAndPassword();
+        validateFields(false);
     }
 
     @Override
@@ -64,6 +60,9 @@ public class LoginActivity extends AppCompatActivity implements LoginRequest.Log
     }
 
     public void login(View view) {
+        if (!validateFields(true))
+            return;
+        btnLogin.setEnabled(false);
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
         new LoginRequest(email, password, this).process();
@@ -80,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoginRequest.Log
                 etEmail.setText(email);
                 String password = data.getStringExtra("password");
                 etPassword.setText(password);
+                Toast.makeText(this, "Registration complete", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -88,38 +88,13 @@ public class LoginActivity extends AppCompatActivity implements LoginRequest.Log
         startActivity(new Intent(getApplicationContext(), PasswordResetActivity.class));
     }
 
-    private void validateEmailAndPassword() {
-        String email = etEmail.getText().toString();
-        boolean emailValid = emailPattern.matcher(email).matches();
-
-        String password = etPassword.getText().toString();
-        boolean passwordValid = password.length() > 0;
-        if (emailValid && passwordValid) {
-            btnLogin.setEnabled(true);
-        } else {
-            btnLogin.setEnabled(false);
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        validateEmailAndPassword();
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-    }
-
     @Override
     public void onLoginComplete() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 startActivity(new Intent(getApplicationContext(), AuthTestActivity.class));
+                btnLogin.setEnabled(true);
             }
         });
     }
@@ -130,8 +105,51 @@ public class LoginActivity extends AppCompatActivity implements LoginRequest.Log
             @Override
             public void run() {
                 btnLogin.setEnabled(true);
-                tvResponse.setText("Error: " + errorMessage);
+                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        validateFields(false);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+    }
+
+    private boolean validateFields(boolean onClick) {
+        boolean allFieldsOk = true;
+
+        String email = etEmail.getText().toString();
+        if (!emailPattern.matcher(email).matches()) {
+            allFieldsOk = false;
+            if (onClick)
+                tilEmail.setError("You provided invalid email");
+        } else {
+            tilEmail.setErrorEnabled(false);
+        }
+
+        String password = etPassword.getText().toString();
+        if (password.length() < 3) {
+            allFieldsOk = false;
+            if (onClick)
+                tilPassword.setError("Password is too short");
+        } else {
+            tilPassword.setErrorEnabled(false);
+        }
+        return allFieldsOk;
+    }
+
+    private void setError(TextInputLayout layout, int id, boolean onClick) {
+        if (onClick)
+            layout.setError(getResources().getText(id));
+    }
+
+
 }
