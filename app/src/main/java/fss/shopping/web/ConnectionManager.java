@@ -1,4 +1,4 @@
-package fss.shopping.service;
+package fss.shopping.web;
 
 import android.util.Log;
 
@@ -15,15 +15,15 @@ import okhttp3.Response;
  * Created by Alex on 07.02.2018.
  */
 
-public class ClientHolder {
-    private static final String TAG = ClientHolder.class.getName();
-    private static final ClientHolder INSTANCE = new ClientHolder();
+public class ConnectionManager {
+    private static final String TAG = ConnectionManager.class.getName();
+    private static final ConnectionManager INSTANCE = new ConnectionManager();
 
     private final OkHttpClient client;
     private final HashSet<String> cookies = new HashSet<>();
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
-    private ClientHolder() {
+    private ConnectionManager() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(new AddCookiesInterceptor());
         builder.addInterceptor(new ReceivedCookiesInterceptor());
@@ -38,7 +38,7 @@ public class ClientHolder {
         return INSTANCE.getClient();
     }
 
-    public static ClientHolder getInstance() {
+    public static ConnectionManager getInstance() {
         return INSTANCE;
     }
 
@@ -74,7 +74,7 @@ public class ClientHolder {
         }
     }
 
-    private HashSet<String> getCookies() {
+    public HashSet<String> getCookies() {
         lock.readLock().lock();
         try {
             return new HashSet<>(cookies);

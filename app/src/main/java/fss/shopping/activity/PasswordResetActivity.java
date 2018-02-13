@@ -13,8 +13,8 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
     }
-    public void resetPassword (View view)
-    {
+
+    public void resetPassword(View view) {
 
     }
 }

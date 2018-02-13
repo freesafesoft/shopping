@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import fss.shopping.R;
-import fss.shopping.service.LogoutRequest;
+import fss.shopping.web.service.SignOutRequest;
 
 /**
  * Created by Alex on 06.02.2018.
+ * Activity for auth testing
  */
-
-public class AuthTestActivity extends AppCompatActivity implements LogoutRequest.LogoutListener {
+public class AuthTestActivity extends AppCompatActivity implements SignOutRequest.Listener {
     private static final String TAG = AuthTestActivity.class.getName();
     private TextView tvResponse;
 
@@ -27,11 +27,11 @@ public class AuthTestActivity extends AppCompatActivity implements LogoutRequest
     public void logout(View v) {
         Log.i(TAG, "Logout");
         tvResponse.setText("Logout");
-        new LogoutRequest(this).process();
+        new SignOutRequest(this).process();
     }
 
     @Override
-    public void onLogoutComplete() {
+    public void onSignOutSuccess() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -42,7 +42,7 @@ public class AuthTestActivity extends AppCompatActivity implements LogoutRequest
     }
 
     @Override
-    public void onLogoutFailure(final String errorMessage) {
+    public void onSignOutFailure(final String errorMessage) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

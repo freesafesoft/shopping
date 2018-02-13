@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Умные закупки</string>
 
-    <!-- ========= Main Avtivity ========= -->
+    <!-- ========= Registration Activity ========= -->
     <string name="reg_header_reg">Регистрация</string>
     <string name="reg_tv_empty_name">Укажите имя</string>
     <string name="reg_tv_empty_surname">Укажите фамилию</string>
@@ -22,14 +22,15 @@
     <string name="reg_hint_password2">Повторите пароль</string>
     <string name="reg_cb_terms">Согласен(-а) с условиями использования приложения</string>
     <string name="reg_bt_reg">Зарегистрироваться</string>
+    <string name="reg_toast_process">Регистрация в процессе...</string>
 
-    <!-- ========= Login Avtivity ========= -->
+    <!-- ========= Login Activity ========= -->
     <string name="log_hint_email">Адрес эл.почты</string>
     <string name="log_hint_password">Пароль</string>
     <string name="log_btn_login">Войти</string>
     <string name="log_btn_forgot_password">Забыли пароль?</string>
 
-    <!-- ========= PasswordReset Avtivity ========= -->
+    <!-- ========= PasswordReset Activity ========= -->
     <string name="pwd_tv_provide_email">Чтобы найти аккаунт, введите адрес эл.почты</string>
     <string name="pwd_hint_email">Адрес эл.почты</string>
     <string name="pwd_btn_reset_password">Сбросить пароль</string>

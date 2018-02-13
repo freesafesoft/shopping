@@ -24,9 +24,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.regex.Pattern;
 
 import fss.shopping.R;
-import fss.shopping.service.RegistrationRequest;
+import fss.shopping.web.service.SignUpRequest;
 
-public class RegistrationActivity extends AppCompatActivity implements RegistrationRequest.RegistrationListener, TextWatcher {
+public class RegistrationActivity extends AppCompatActivity implements SignUpRequest.Listener, TextWatcher {
     private static final String TAG = RegistrationActivity.class.getName();
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private EditText etName;
@@ -42,6 +42,8 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     private CheckBox cbTerms;
     private Button btnRegistration;
     private Pattern emailPattern;
+
+    private String captchaKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         cbTerms = (CheckBox) findViewById(R.id.check_box);
         btnRegistration = (Button) findViewById(R.id.btn_registration);
         emailPattern = Pattern.compile(EMAIL_PATTERN);
+        captchaKey = getResources().getString(R.string.captcha_key);
     }
 
     @Override
@@ -87,31 +90,29 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         etPasswordConfirm.removeTextChangedListener(this);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     public void registration(View view) {
         if (!validateFields(true))
             return;
         btnRegistration.setEnabled(false);
-        final String name = etName.getText().toString();
-        final String surname = etSurname.getText().toString();
-        final String email = etEmail.getText().toString();
-        final String password = etPassword.getText().toString();
-        final String passwordConfirm = etPasswordConfirm.getText().toString();
         Log.i(TAG, "Registration request");
+        final SignUpRequest.Builder builder = new SignUpRequest.Builder()
+                .addFirstName(etName.getText().toString())
+                .addFLastName(etSurname.getText().toString())
+                .addEmail(etEmail.getText().toString())
+                .addPassword(etPassword.getText().toString())
+                .addPasswordConfirm(etPasswordConfirm.getText().toString())
+                .addTerms(cbTerms.isChecked())
+                .addRegistrationListener(this);
 
-        Toast.makeText(RegistrationActivity.this, "Verifying you are not a robot =)", Toast.LENGTH_SHORT).show();
-        SafetyNet.getClient(this).verifyWithRecaptcha("6LfmCEUUAAAAAEV2BlBvgfklqwUkedW0ueIj1uhK")
+        // Toast.makeText(RegistrationActivity.this, "Verifying you are not a robot =)", Toast.LENGTH_SHORT).show();
+        SafetyNet.getClient(this).verifyWithRecaptcha(captchaKey)
                 .addOnSuccessListener(this, new OnSuccessListener<SafetyNetApi.RecaptchaTokenResponse>() {
                     @Override
                     public void onSuccess(SafetyNetApi.RecaptchaTokenResponse response) {
                         if (!response.getTokenResult().isEmpty()) {
                             Toast.makeText(RegistrationActivity.this, "Registration in process", Toast.LENGTH_LONG).show();
-                            new RegistrationRequest(name, surname, password, passwordConfirm,
-                                    email, true, response.getTokenResult(), RegistrationActivity.this).process();
+                            builder.addCaptcha(response.getTokenResult());
+                            builder.build().process();
                         } else
                             btnRegistration.setEnabled(true);
                     }
@@ -133,7 +134,12 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     @Override
-    public void onRegistrationComplete() {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onSignUpSuccess() {
         Intent data = new Intent();
         data.putExtra("email", etEmail.getText().toString());
         data.putExtra("password", etPassword.getText().toString());
@@ -142,7 +148,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     @Override
-    public void onRegistrationFailure(String errorMessage) {
+    public void onSignUpFailure(String errorMessage) {
         final String errorMsg = getResources().getString(R.string.reg_tv_error) + ": " + errorMessage;
         runOnUiThread(new Runnable() {
             @Override
@@ -217,7 +223,6 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
             setError(tilPasswordConfirm, R.string.reg_tv_pass_not_same, onClick);
             allFieldsOk = false;
         } else {
-            Log.e(TAG, "Passwords are same");
             tilPasswordConfirm.setErrorEnabled(false);
         }
 

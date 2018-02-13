@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Robich zakupy</string>
 
-    <!-- ========= Main Avtivity ========= -->
+    <!-- ========= Registration Activity ========= -->
     <string name="reg_header_reg"></string>
     <string name="reg_tv_empty_name">Imje</string>
     <string name="reg_tv_empty_surname">Nazwisko</string>
@@ -23,13 +23,13 @@
     <string name="reg_cb_terms"></string>
     <string name="reg_bt_reg">Zarejestruj się</string>
 
-    <!-- ========= Login Avtivity ========= -->
+    <!-- ========= Login Activity ========= -->
     <string name="log_hint_email">Email</string>
     <string name="log_hint_password">log_hint_password</string>
     <string name="log_btn_login">Zaloguj się</string>
     <string name="log_btn_forgot_password">Nie pamietasz hasła?</string>
 
-    <!-- ========= PasswordReset Avtivity ========= -->
+    <!-- ========= PasswordReset Activity ========= -->
     <string name="pwd_tv_provide_email">Podaj adres e-mail, aby wyszukać konto</string>
     <string name="pwd_hint_email">Email</string>
     <string name="pwd_btn_reset_password">Znajdź swoje konto</string>
