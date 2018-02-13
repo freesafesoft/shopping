@@ -5,7 +5,12 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorIndigo</item>
+    </style>
+
+    <style name="Buttons" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorButtonNormal">#9FA8DA</item>
+        <item name="colorControlHighlight">#5C6BC0</item>
     </style>
 
 

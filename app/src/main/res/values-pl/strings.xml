@@ -2,24 +2,35 @@
 <resources>
     <string name="app_name">Robich zakupy</string>
 
-    <!-- ========= Main Avtivity ========= -->
-    <string name="reg_header_reg">Registration</string>
+    <!-- ========= Registration Activity ========= -->
+    <string name="reg_header_reg"></string>
     <string name="reg_tv_empty_name">Imje</string>
     <string name="reg_tv_empty_surname">Nazwisko</string>
-    <string name="reg_tv_empty_email">email</string>
-    <string name="reg_tv_empty_pass">Haslo 1</string>
-    <string name="reg_tv_empty_pass2">Haslo 2</string>
-    <string name="reg_tv_pass_not_same">Haslo druge</string>
-    <string name="reg_tv_terms">You have to agree with terms</string>
-    <string name="reg_tv_registration_process">Registration in process...</string>
-    <string name="reg_tv_unexpected_response">Unexpected response from server</string>
-    <string name="reg_tv_cant_parse_response">Can\'t parse server response from server</string>
-    <string name="reg_tv_error">Registration error</string>
-    <string name="reg_hint_name">Name</string>
-    <string name="reg_hint_surname">Surname</string>
-    <string name="reg_hint_email">Email</string>
-    <string name="reg_hint_password">Password</string>
-    <string name="reg_hint_password2">Confirm password</string>
-    <string name="reg_cb_terms">I\'m agree with provided terms</string>
-    <string name="reg_bt_reg">Registration</string>
+    <string name="reg_tv_empty_email"></string>
+    <string name="reg_tv_empty_pass"></string>
+    <string name="reg_tv_empty_pass2"></string>
+    <string name="reg_tv_pass_not_same"></string>
+    <string name="reg_tv_terms"></string>
+    <string name="reg_tv_registration_process"></string>
+    <string name="reg_tv_unexpected_response"></string>
+    <string name="reg_tv_cant_parse_response"></string>
+    <string name="reg_tv_error"> </string>
+    <string name="reg_hint_name"></string>
+    <string name="reg_hint_surname"></string>
+    <string name="reg_hint_email"></string>
+    <string name="reg_hint_password"></string>
+    <string name="reg_hint_password2"> </string>
+    <string name="reg_cb_terms"></string>
+    <string name="reg_bt_reg">Zarejestruj się</string>
+
+    <!-- ========= Login Activity ========= -->
+    <string name="log_hint_email">Email</string>
+    <string name="log_hint_password">log_hint_password</string>
+    <string name="log_btn_login">Zaloguj się</string>
+    <string name="log_btn_forgot_password">Nie pamietasz hasła?</string>
+
+    <!-- ========= PasswordReset Activity ========= -->
+    <string name="pwd_tv_provide_email">Podaj adres e-mail, aby wyszukać konto</string>
+    <string name="pwd_hint_email">Email</string>
+    <string name="pwd_btn_reset_password">Znajdź swoje konto</string>
 </resources>
