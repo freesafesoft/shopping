@@ -29,5 +29,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'com.google.android.gms:play-services-safetynet:11.8.0'
+
+    // design library for UI
     compile 'com.android.support:design:25.4.0'
+    // bottom navigation menu ex lib
+    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 }
