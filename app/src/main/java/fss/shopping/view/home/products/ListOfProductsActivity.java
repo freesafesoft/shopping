@@ -1,22 +1,24 @@
-package fss.shopping.view.profile;
+package fss.shopping.view.home.products;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import fss.shopping.view.HomeActivity;
+import fss.shopping.view.home.HomeActivity;
 
 /**
  * Created by Alex on 25.02.2018.
  */
 
-public class ProfileActivity extends HomeActivity {
+public class ListOfProductsActivity extends HomeActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+
+
     @Override
     public int getActivityNumber() {
-        return 2;
+        return 1;
     }
 }

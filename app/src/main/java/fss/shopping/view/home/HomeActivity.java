@@ -1,4 +1,4 @@
-package fss.shopping.view;
+package fss.shopping.view.home;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +19,19 @@ public abstract class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
 
+    protected BottomNavigationViewEx bottomNavigationViewEx;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             Log.d(TAG, "onCreate " + this.getClass().getName());
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_home);
-            setUpBottomNavigationBar();
-        } catch(Exception e) {
+
+            bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bot_nav_bar);
+            BottomNavigationViewHelper.setUpBottomNavigationView(bottomNavigationViewEx);
+            BottomNavigationViewHelper.enableNavigation(this, bottomNavigationViewEx);
+        } catch (Exception e) {
             Log.e(TAG, "onCreate: Exception occured:" + e.getMessage(), e);
         }
     }
@@ -35,6 +40,9 @@ public abstract class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         Log.d(TAG, "onStart " + this.getClass().getName());
         super.onStart();
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(getActivityNumber());
+        menuItem.setChecked(true);
     }
 
     @Override
@@ -50,18 +58,4 @@ public abstract class HomeActivity extends AppCompatActivity {
     }
 
     public abstract int getActivityNumber();
-
-    /**
-     * BottomNavigationView setup
-     */
-    public void setUpBottomNavigationBar() {
-        Log.d(TAG, "setUpBottomNavigationBar " + this.getClass().getName());
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bot_nav_bar);
-        BottomNavigationViewHelper.setUpBottomnavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(this, bottomNavigationViewEx);
-
-        Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(getActivityNumber());
-        menuItem.setChecked(true);
-    }
 }

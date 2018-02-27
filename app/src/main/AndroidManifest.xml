@@ -14,15 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.lists.ShoppingListActivity">
+        <activity android:name=".view.home.lists.ShoppingListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.products.ListOfProductsActivity"></activity>
-        <activity android:name=".view.profile.ProfileActivity"></activity>
+        <activity android:name=".view.home.products.ListOfProductsActivity"></activity>
+        <activity android:name=".view.home.profile.ProfileActivity"></activity>
 
         <activity android:name=".activity.RegistrationActivity"></activity>
         <activity android:name=".activity.PasswordResetActivity"></activity>

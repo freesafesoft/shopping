@@ -1,6 +1,5 @@
 package fss.shopping.utils;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,10 +9,10 @@ import android.view.MenuItem;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import fss.shopping.R;
-import fss.shopping.view.HomeActivity;
-import fss.shopping.view.lists.ShoppingListActivity;
-import fss.shopping.view.products.ListOfProductsActivity;
-import fss.shopping.view.profile.ProfileActivity;
+import fss.shopping.view.home.HomeActivity;
+import fss.shopping.view.home.lists.ShoppingListActivity;
+import fss.shopping.view.home.products.ListOfProductsActivity;
+import fss.shopping.view.home.profile.ProfileActivity;
 
 /**
  * Created by Alex on 23.02.2018.
@@ -22,8 +21,8 @@ import fss.shopping.view.profile.ProfileActivity;
 public class BottomNavigationViewHelper {
     private static final String TAG = "BottomNavigationViewHel";
 
-    public static void setUpBottomnavigationView(BottomNavigationViewEx bottomNavigationViewEx) {
-        Log.d(TAG, "setUpBottomnavigationView: menu bar configuration");
+    public static void setUpBottomNavigationView(BottomNavigationViewEx bottomNavigationViewEx) {
+        Log.d(TAG, "setUpBottomNavigationView");
         bottomNavigationViewEx.enableAnimation(false);
         bottomNavigationViewEx.enableItemShiftingMode(false);
         bottomNavigationViewEx.enableShiftingMode(false);
@@ -41,7 +40,6 @@ public class BottomNavigationViewHelper {
                         if (activity instanceof ShoppingListActivity)
                             return false;
                         Intent intent1 = new Intent(activity, ShoppingListActivity.class);
-                        //intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         activity.startActivity(intent1);
                         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         activity.finish();
@@ -51,7 +49,6 @@ public class BottomNavigationViewHelper {
                         if (activity instanceof ListOfProductsActivity)
                             return false;
                         Intent intent2 = new Intent(activity, ListOfProductsActivity.class);
-                        //intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         activity.startActivity(intent2);
                         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         activity.finish();
@@ -61,7 +58,6 @@ public class BottomNavigationViewHelper {
                         if (activity instanceof ProfileActivity)
                             return false;
                         Intent intent3 = new Intent(activity, ProfileActivity.class);
-                        //intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         activity.startActivity(intent3);
                         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         activity.finish();
